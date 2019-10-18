@@ -1,0 +1,10 @@
+mesa
+matplotlib
+pandas
+numpy
+seaborn
+statistics
+sklearn
+scipy
+statsmodel.api
+scipy.stats
