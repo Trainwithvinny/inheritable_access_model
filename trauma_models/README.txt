@@ -1,6 +1,4 @@
-The adjustable_values page is the only page you should need to change and access values. This is not true
-if you intend to do a single run, in this case you will need to go into data_vis_mpl and change the default
-values for whether it is a single_run or multi_run.
+The adjustable_values page is the only page you should need to change and access values. .
 
 This model contains 4 iterations of the model design, and handles 4 layers of complexity in approaching the
 subject matter.
