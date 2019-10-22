@@ -1,33 +1,40 @@
-'''page to store default values for run'''
+'''page to store values for run'''
 #from schedule import RandomActivationByType
 #from monte_carlo_generator import *
 
 
 #what dataset are you using?
-sample_or_no = 'no'
-single_or_multi_str = 'multi' #'multi' or 'single'
+sample_or_no = str(input("Is this a sample? yes or no? ") or "no")#'no'
+single_or_multi_str = str(input("Is this a single or multi-run? single or multi? ") or "multi") #'multi' or 'single'
+
 #where to put this run output
 #the below can be a list of parameters for batch run also
 analysis_by_exp = "vertical_age_dpt" #["vertical_only", "vertical_age_dpt", "vertical_age_dpt_horizontal", "vertical_age_dpt_leaders"]
 
+print("Is this running the sample? \n" + sample_or_no)
+print("This is running for: \n" + analysis_by_exp)
+while True:
+    # some code here
+    if input('Do You Want To Continue? y or n \n') != 'n':
+        break
 
 #SET tables
 '''the multivariate analysis will indicate when the values start to stabilisie, looking at
 variables against model_tick'''
-warm_up_val = 75 #due to the PTSD rate being too high before that
+warm_up_val = 75 #due to the PTSD rate being too high before that point, and the point at which values stabilise
 
 '''single run'''
 #the below are the same values but for single run
-percent_change_val = 6
-standard_ag_rad_val = 2
-leader_search_ag_rad_val = 6
-trauma_event_fp_duration_val = 50
-set_exp_age_val = 2
-max_age_val = 34
-leader_e_trau_sens_thres_val = 4
-preg_min_age_val = 16
-preg_perc_int_val = 7
-ptsd_value = 7
+percent_change_val = 6 #degrading environmental trauma
+standard_ag_rad_val = 2 #radius for agents search
+leader_search_ag_rad_val = 6 #radius to look for leader
+trauma_event_fp_duration_val = 50 #duration in which infants are extra effected by traumatic event
+set_exp_age_val = 2 #exposure age
+max_age_val = 34 #maximum age of agents
+leader_e_trau_sens_thres_val = 4 #min threshold for trauma sensitivity
+preg_min_age_val = 16 #min age for pregnancy
+preg_perc_int_val = 7 #pregnancy chance
+ptsd_value = 7 #tables - where on the scale is it considered ptsd
 #GRID
 grid_width = 200 #[100, 125, 150] #width
 grid_height = 200 #[100, 125, 150] #height
@@ -44,15 +51,14 @@ initial_num_val = 1 #100
 #br
 model_max_steps = 5 #300
 
-#out of 10
+#scales are out out of 10
 #increased env trauma and decreased heri to reflect that genetic adaptation were more prevalent
 #in infants (which still exists)
-mean_heritable_success_val= 5
-mean_heritable_trauma_val= 1 # on the basis that the research says some will sit below the ptsd
-#the mean reflects this potential
-#out of 10
-mean_env_trauma_val= 10 #same as heri
-mean_env_success_val= 1
+mean_heritable_success_val= 5 #default 5 - this is to reflect a neautral value for success
+mean_heritable_trauma_val= 1 # default 1 = to reflect the agents not having any trauma to start
+
+mean_env_trauma_val= 10 #default 10 = the environment is traumatic
+mean_env_success_val= 1 #default 1 = there is no success in the environment
 
 #this is the divisable value for the percent change in value at every reproduction from parent to offspring
 #assuming that the sensitivty to environmental gets less for trauma (more for succ), reflecting
@@ -69,11 +75,11 @@ mean_heritable_trau_sens_val= 6
 mean_env_succ_sens_val= 1
 mean_env_trau_sens_val= 1
 
+'''these value reflect the research into the proportion of genetic and heritable'''
 success_heritable_proportion_val=65
 success_env_proportion_val=35
 trauma_heritable_proportion_val=71
 trauma_env_proportion_val=29
-#death_rate_val_run=0.79
 
 
 #search radius for movement
