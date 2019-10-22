@@ -28,7 +28,7 @@ class MoneyModel(Model):
     Verbose = False # if verbose include print statements
 
 
-    description = 'First model observing the effects of trauma'
+    description = 'model observing the effects of trauma'
 
     def __init__(self,
                 initial_num = initial_num_val,
@@ -60,20 +60,30 @@ class MoneyModel(Model):
                 ):
 
         super().__init__()
+        '''this class also produces the model and agent output, the filenames and paths for these
+        are listed here'''
         self.my_path = os.path.abspath(__file__)
         self.mother_folder, data_vis_py = os.path.split(self.my_path)
+        print("The mother folder for the run is ", self.mother_folder)
+        print("please check folder paths as everything has a home")
         self.grouped_folder, models = os.path.split(self.mother_folder)
         self.sensitivty_csv_folder = os.path.join(self.grouped_folder, "sensitivity_analysis", "csv_folder")
         self.model_output_folder = os.path.join(self.grouped_folder, "model_output")
         self.data_folder = os.path.join(self.model_output_folder, analysis_by_exp)
         self.csv_folder = os.path.join(self.data_folder, "csv_folder")
+        print(self.sensitivty_csv_folder)
+        print(self.model_output_folder)
+        print(self.data_folder)
+        print(self.csv_folder)
         self.filename1 = "step_data_batch_hoz_" + analysis_by_exp + ".csv"
         self.filename2 = "data_agent_" + analysis_by_exp + ".csv"
         self.filename3 = "br_df_model_vars.csv"
         self.filename4 = "i_run_data.csv"
         self.filename5 = "line3"
         self.filename6 = "full_sa_step_data_batch_hoz_" + analysis_by_exp + ".csv"
-
+        print("model output folder \n", self.filename1)
+        print("agent output foler \n", self.filename2)
+        '''main arguments'''
         self.width = grid_width
         self.height = grid_height
         self.initial_num = initial_num
@@ -122,6 +132,7 @@ class MoneyModel(Model):
         self.pregnancy_chance= pregnancy_chance
         #self.runs_model = runs_model
         self.runs_model = runs_model_var
+        '''this is the data collector'''
         self.datacollector = DataCollector(model_reporters=
             {#"run_number": lambda m: m.run_number
             "initial_num": lambda m: m.schedule.get_initial_num(MoneyModel),
@@ -166,7 +177,7 @@ class MoneyModel(Model):
             "death_percent": lambda m: m.death_percent_model,
             "pop_growth_rate": lambda m: m.population_growth_rate,
             "agent_count": lambda m: m.schedule.get_type_count(Agent_Class)})
-
+        '''agent data collector'''
         self.ar = {"agent_age": lambda a: a.age,
         "agent_well_being": lambda a: a.well_being,
         "leader_status": lambda a: a.leader_status,
@@ -181,7 +192,7 @@ class MoneyModel(Model):
 
 
         def place_agent_start(agent_class):
-
+            '''this places agents on the grid'''
 
             print("self.initial_num", (self.initial_num))
             for i in range(self.initial_num):
@@ -191,7 +202,7 @@ class MoneyModel(Model):
                 the more chance for outliers and variability'''
 
                 self.radius_val = initial_agent_radius
-                
+
                 self.age=round(np.random.normal(mean_age))
 
                 x = self.random.randrange(compact_grid_width)
@@ -221,11 +232,12 @@ class MoneyModel(Model):
                 self.heritable_trauma_sensitivity = round(np.random.normal(self.mean_heritable_trau_sens))
 
 
-                #do I need these totals as its done in the steps
+                #May not need these totals as its done in the steps
                 self.total_success = round((((self.env_success/100)*self.success_env_proportion) + ((self.heritable_success/100)*self.success_heritable_proportion)))
                 self.total_trauma = round(((self.env_trauma/100)*self.trauma_env_proportion) +  ((self.heritable_trauma/100)*self.trauma_heritable_proportion))
                 self.well_being = round(self.total_success - self.total_trauma)
 
+                #this uses the agent_class to add the agents
                 agent = agent_class(unique_id= self.next_id(), pos= (x,y), age= self.age, model= self, moore= True,
                     well_being= self.well_being, agent_type='agent', total_trauma=self.total_trauma, total_success=self.total_success,
                      radius_val= self.radius_val,
@@ -266,7 +278,7 @@ class MoneyModel(Model):
         br_agent_df.to_csv(os.path.join(self.csv_folder, self.filename2))
 
     def batchrunner(self):
-        # "leader_perc":leader_perc_br
+        '''this also produces the model dataframe'''
         br_params = {
         "general_percent_change": percent_change,
         "standard_agent_radius": standard_ag_rad,
@@ -309,7 +321,7 @@ class MoneyModel(Model):
         return br_step_data
 
     def agent_df(self):
-
+        #agent data frame
         br_agent_df = self.dc.get_agent_vars_dataframe()
         #print("agent df" br_agent_df)
         br_agent_df.to_csv(os.path.join(self.csv_folder, self.filename2))
