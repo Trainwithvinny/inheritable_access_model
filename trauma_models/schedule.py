@@ -7,24 +7,8 @@ import random
 import numpy as np
 from adjustable_values import *
 
-#the below might be better for mine, to remove the bias and simplify some elements
-#each agent will need a step and advance.step() method
-#from mesa.time import SimultaneousActivation
 
-#or
 
-#dividing the scheduler into stages of activation which all agents must go through
-#from mesa.time import StagedActivation
-
-'''Args:
-            model: Model object associated with the schedule.
-            stage_list: List of strings of names of stages to run, in the
-                         order to run them in.
-            shuffle: If True, shuffle the order of agents each step.
-            shuffle_between_stages: If True, shuffle the agents after each
-                                    stage; otherwise, only shuffle at the start
-                                    of each step.
-'''
 
 class RandomActivationByType(RandomActivation):
     '''
@@ -115,9 +99,9 @@ class RandomActivationByType(RandomActivation):
         for agent_key in agent_keys:
             self.agents_by_type[type][agent_key].step()
 
-        '''for agent_key in agent_keys:
-            self.agents_by_type[type][agent_key].step()'''
+        
 
+        '''THE REST OF THIS COLLECTS DIFFERENT DATA POINTS FOR THE MODEL AND AGENTS'''
 
     def get_type_count(self, type_class):
         '''
