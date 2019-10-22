@@ -6,6 +6,7 @@ import uuid
 from adjustable_values import *
 import numpy as np
 
+'''this class deals with each new agent and their inheritance'''
 class Upgrade_Agent(Model):
     def __init__(self):
         #self.agent_class = agent_class
