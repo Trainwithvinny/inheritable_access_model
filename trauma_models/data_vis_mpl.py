@@ -19,7 +19,7 @@ class Data_Visualisation(object):
     def __init__(self):
         #sample_or_no = 'no'
         single_or_multi = single_or_multi_str
-
+        #below are the folders and pathways
         self.my_path = os.path.abspath(__file__)
         self.mother_folder, data_vis_py = os.path.split(self.my_path)
         self.grouped_folder, models = os.path.split(self.mother_folder)
@@ -39,7 +39,7 @@ class Data_Visualisation(object):
 
         print("my path", self.my_path)
         print("my data folder", self.data_folder)
-
+        #filenames are defined here
         self.filename2 = "sample_" + analysis_by_exp + ".csv"
         self.filename17 = "self.whole_df_" + analysis_by_exp + ".csv"
         self.filename18 = "self.group_by_run_" + analysis_by_exp + ".csv"
@@ -50,7 +50,7 @@ class Data_Visualisation(object):
         self.filename23 = "self.multivariate_table_" + analysis_by_exp + ".csv"
         self.filename24 = "self.tick_run_" + analysis_by_exp + ".csv"
         self.filename25 = "data_agent_" + analysis_by_exp + ".csv"
-
+        #this produces a pop up box on the printed data visuals
         self.key_data_points = (r'initial_n=' + str(init_initial_num),
         r'trauma_heritable_proportion=' + str(trauma_heritable_proportion),
         r'trauma_env_proportion =' + str(trauma_env_proportion),
@@ -73,17 +73,19 @@ class Data_Visualisation(object):
         r'preg_age=' + str(preg_min_age),
         )
 
+        #read in the already produced whole data frame
         whole_df = pd.read_csv(os.path.join(self.csv_folder, self.filename21), index_col=0)
         #self.whole_df = pd.read_csv(os.path.join(self.csv_folder, self.filename21), index_col=0)
         #self.whole_df.dropna(axis=0, how='any', thresh=None, subset=None, inplace=False)
         self.whole_df = pd.DataFrame(data=whole_df)
         self.whole_df = self.whole_df.round(2)
 
+        #add run number to df
         my_list = []
         length = len(self.whole_df)
 
         n = 0
-        #print("length", range(length))
+
         for x in range(length):
             n = n + 1
             for i in range(model_max_steps):
@@ -94,6 +96,8 @@ class Data_Visualisation(object):
 
         self.whole_df['run'] = my_list
 
+
+        '''the below produces different flavours of the df for analysis'''
         #create a sample df
         if sample_or_no is 'sample':
             sample = self.whole_df.sample(frac=0.01, replace=True, random_state=1)
@@ -259,7 +263,7 @@ class Data_Visualisation(object):
         r_o_t.close()
 
     def analytical_output_shaded_plots(self, X, Y1, data_set, folder, Y2=None, Y3=None, name_suffix=None):
-
+        '''this produces a shaded plot of the input values'''
 
         fig = plt.figure(figsize=(15,10))
 
@@ -321,8 +325,8 @@ class Data_Visualisation(object):
 
 
     def do_linear_regression_models(self,xy_dict, folder, data_set, name_suffix=None):
-
-        print(type(xy_dict), len(xy_dict))
+        '''this produces the lineplot regression'''
+        #print(type(xy_dict), len(xy_dict))
 
         for k,v in xy_dict.items():
 
@@ -349,7 +353,7 @@ class Data_Visualisation(object):
             #plt.show()
 
     def analytical_output_regression(self, xy_dict, data_set, name_suffix=None):
-
+        '''this produces the linear regression values'''
         with open(os.path.join(self.linear_regression_folder, "regression_info.txt"), 'w+') as r_o_t:
             r_o_t.writelines('''Df of residuals and models relates to the degrees of freedom —
             “the number of values in the final calculation of a statistic that are free to vary.\n
@@ -466,7 +470,7 @@ class Data_Visualisation(object):
 
 
     def run_analytics(self):
-
+        '''this is where all the input values for the data analysis is created'''
         #integrated already
         #500 yrs
         #self.analytical_output_shaded_plots(folder=self.lineplot_folder, X="model_tick", Y1="leader_perc", data_set=self.warm_up_table, Y2="ptsd_percent", Y3="scaled_well_being", name_suffix = '500yrs')
