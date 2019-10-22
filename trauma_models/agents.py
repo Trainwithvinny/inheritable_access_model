@@ -15,15 +15,14 @@ from mesa.visualization.ModularVisualization import ModularServer
 from adjustable_values import *
 from place_agent import *
 
-
-'''this will have all the relevant arguments to make each sub-class unique'''
+'''this class handles all agents on the grid and their actions'''
 class Agent_Class(Agent):
     grid = None
     x = None
     y = None
     moore = True
 
-    """ An agent with fixed initial well_being."""
+
     def __init__(self, unique_id, pos, age, model, moore, well_being, total_trauma, total_success
         , radius_val,
         heritable_success, heritable_trauma, heritable_success_sensitivity,
@@ -122,8 +121,7 @@ class Agent_Class(Agent):
 
     def leader_trans(self):
 
-        '''leaders are decided by a chance lottery, only those with a low enough total trauma rate can win, currently average_success
-        to 5-10%'''
+        '''leaders are decided by a chance lottery, only those with a low enough trauma sensitivty can win'''
         if self.leader_status is None:
 
             if self.env_trauma_sensitivity < self.leader_trauma_sensitivty_threshold:
@@ -135,11 +133,7 @@ class Agent_Class(Agent):
             else:
                 self.leader_status = 'no'
 
-    def adjust_succ_sens(self):
 
-        if self.env_success > success_inc_thres:
-
-            Formulae.increase_succ_sens(self)
 
     def check_neighbors(self, ag_radius, ag_class):
 
@@ -147,7 +141,7 @@ class Agent_Class(Agent):
         self.cellmates = [obj for obj in self.this_cell if isinstance(obj, (ag_class))]
 
     def rec_success(self):
-
+        '''agents receive success from their neighbours using this object, prioritising leaders first'''
         try:
 
             self.check_neighbors(self.leader_search_agent_radius, Agent_Class)
@@ -189,7 +183,7 @@ class Agent_Class(Agent):
             pass
 
     def rec_trauma(self):
-
+        '''agents receive trauma from their neighbours using this object, prioritising leaders first'''
         try:
             self.check_neighbors(self.leader_search_agent_radius, Agent_Class)
             leader_list = []
@@ -243,11 +237,9 @@ class Agent_Class(Agent):
 
     def calc_total_t_s(self):
 
+        '''this will gather the total for success and trauma each step'''
         self.total_trauma = round(((self.env_trauma/100)*self.agent_env_trauma_proportion +
         (self.heritable_trauma/100)*self.agent_heritable_trauma_proportion))
-
-
-    
 
         self.total_success = round(((self.env_success/100)*self.agent_env_success_proportion +
         (self.heritable_success/100)*self.agent_heritable_success_proportion))
@@ -267,10 +259,11 @@ class Agent_Class(Agent):
                 pass
 
     def calculate_well_being(self):
+        '''this will calculate agents well-bing each step'''
         self.well_being = self.total_success - self.total_trauma
 
     def cap_max_vals(self):
-
+        '''success/trauma values must be kept between 1-10'''
         if self.env_trauma > 10:
             self.env_trauma = 10
         if self.env_success > 10:
@@ -280,6 +273,7 @@ class Agent_Class(Agent):
 
 
     def death_trauma(self):
+        '''agents die if above max trauma'''
         if self.total_trauma > max_trauma:
 
             try:
@@ -288,6 +282,7 @@ class Agent_Class(Agent):
                 pass
 
     def death_success(self):
+        '''this is not used - but will handle the death of agents who are below the min success'''
         if self.total_success > min_success:
             try:
                 self.remove_this_agent()
@@ -306,6 +301,7 @@ class Agent_Class(Agent):
             self.heritable_trauma_sensitivity = 0.6
 
     def no_env_vertical_only(self):
+        '''this is used to keep the necessary values at 0'''
         self.env_trauma = 0
         self.env_trauma_sensitivity = 0
         self.env_success = 0
