@@ -52,38 +52,7 @@ def agent_portrayal(agent):
                 portrayal["Layer"] = 3
                 portrayal["r"] = 0.3
 
-        '''if agent.age >= 16:
-            if agent.well_being > leader_well_being_thres:
-                portrayal["Color"] = "red"
-                portrayal["Layer"] = 2
-                portrayal["r"] = 0.5
-        if agent.age < 16:'''
 
-
-
-
-
-    '''if type(agent) is Success_Store:
-        if agent.contents:
-            portrayal["Color"] = ["#00FF00", "#00CC00", "#009900"]
-        else:
-            portrayal["Color"] = ["#84e184", "#adebad", "#d6f5d6"]
-        portrayal["Shape"] = "rect"
-        portrayal["Filled"] = "true"
-        portrayal["Layer"] = 0
-        portrayal["w"] = 1
-        portrayal["h"] = 1
-
-    if type(agent) is Trauma_Store:
-        if agent.contents:
-            portrayal["Color"] = ["#731905", "#C82B0A", "#F0846D"]
-        else:
-            portrayal["Color"] = ["#84e184", "#adebad", "#d6f5d6"]
-        portrayal["Shape"] = "rect"
-        portrayal["Filled"] = "true"
-        portrayal["Layer"] = 0
-        portrayal["w"] = 1
-        portrayal["h"] = 1'''
 
     return portrayal
 
@@ -91,6 +60,7 @@ def agent_portrayal(agent):
 
 #CanvasGrid is creating the portrayal for the json
 grid = CanvasGrid(agent_portrayal, 100, 100, 1000, 1000)
+'''it is possible to have the agent activity mapped onto a visual in the browser'''
 '''chart = ChartModule([
     {"Label": "Gini", "Color": "Black"}],
     data_collector_name='datacollector'
